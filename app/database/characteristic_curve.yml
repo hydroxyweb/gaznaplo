@@ -1,0 +1,6 @@
+columns:
+  month:
+    type: integer
+  max_limit:
+    type: float
+    precision: 10,2

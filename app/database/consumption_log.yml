@@ -1,0 +1,4 @@
+columns:
+ amount:
+   type: float
+   precision: 10,2
