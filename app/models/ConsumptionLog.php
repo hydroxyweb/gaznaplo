@@ -20,4 +20,21 @@ class ConsumptionLog extends Model
      * @var bool
      */
     public $timestamps = true;
+
+    /**
+     * Retrieves the last reported record from the log
+     */
+    public function lastReportedRecord()
+    {
+        return self::where('reported', '1')
+                ->latest()
+                ->first();
+    }
+
+    public function consumptionSummary($lastReportedDate)
+    {
+        return self::where('created_at', '>', $lastReportedDate)
+                ->where('reported', 0)
+                ->sum('diff_by_amount');
+    }
 }

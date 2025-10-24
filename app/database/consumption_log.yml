@@ -2,3 +2,14 @@ columns:
  amount:
    type: float
    precision: 10,2
+ diff_by_amount:
+   type: float
+   precision: 10,2
+ diff_by_date:
+   type: unsignedTinyInteger
+ average_consumption:
+   type: float
+   precision: 10,2
+ reported:
+   type: boolean
+   default: false
