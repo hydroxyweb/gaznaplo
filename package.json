@@ -4,6 +4,7 @@
         "@leafphp/vite-plugin": "^0.2.1",
         "@tailwindcss/vite": "^4.1.15",
         "@vitejs/plugin-vue": "^6.0.1",
+        "axios": "^1.12.2",
         "tailwindcss": "^4.1.15",
         "vite": "^7.1.11",
         "vue": "^3.5.22"

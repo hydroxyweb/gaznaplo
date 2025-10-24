@@ -1,5 +1,6 @@
 <?php
 
-app()->inertia('/', 'app', [
-    'phpVersion' => PHP_VERSION
-]);
+app()->inertia('/', 'app');
+
+app()->post('/log', 'ConsumptionLogController@log');
+app()->get('/stat', 'StatisticController@index');

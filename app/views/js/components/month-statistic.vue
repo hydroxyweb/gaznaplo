@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import Card from './card.vue';
 
 const month = ref(new Date().toLocaleString('default', { month: 'long' }));
 const year = ref(new Date().getFullYear());
@@ -13,9 +14,10 @@ function fetchMonthStatistics() {
 fetchMonthStatistics();
 </script>
 <template>
-  <div class="month-statistic">
-    <h2>{{ month }} {{ year }} Statisztika</h2>
-    <p>Összes bejegyzés: {{ totalEntries }}</p>
-    <p>Összes mennyiség: {{ totalAmount }} egység</p>
-  </div>    
+  <Card title="Statisztika">
+    <template #content>
+      <p>Összes bejegyzés: {{ totalEntries }}</p>
+      <p>Összes mennyiség: {{ totalAmount }} egység</p>
+    </template>
+  </Card>
 </template>
