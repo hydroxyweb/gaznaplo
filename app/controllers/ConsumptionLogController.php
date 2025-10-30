@@ -9,7 +9,7 @@ class ConsumptionLogController extends Controller
     public function log() 
     {
         $newAmount = request()->get('amount') ?? 0;
-        $log = new ConsumptionLog;
+        $log = new ConsumptionLog();
         $lastEntry = ConsumptionLog::latest()->first();
 
         $log->amount = $newAmount;
@@ -21,8 +21,14 @@ class ConsumptionLogController extends Controller
         $diffInDays = floor($date->diffInDays($now));
         $log->diff_by_date = $diffInDays;
 
-        $log->average_consumption = $diffByAmount / $diffInDays;
+        $log->average_consumption = $diffInDays > 0 ? $diffByAmount / $diffInDays : 0;
         
         $log->save();
+    }
+
+    public function allRecords()
+    {
+        $records = ConsumptionLog::orderBy('created_at', 'desc')->get();
+        return response()->json($records);
     }
 }

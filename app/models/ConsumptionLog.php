@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+
 class ConsumptionLog extends Model
 {
 
@@ -22,18 +24,25 @@ class ConsumptionLog extends Model
     public $timestamps = true;
 
     /**
-     * Retrieves the last reported record from the log
+     * Retrieves the last reported record from the log by the given date
      */
-    public function lastReportedRecord()
+    public function lastReportedRecord($date)
     {
+        $givenDate = new Carbon($date);
+        $firstDayOfMonth = $givenDate->copy()->startOfMonth()->toDateString();
+        $lastDayOfMonth = $givenDate->copy()->endOfMonth()->toDateString();
         return self::where('reported', '1')
-                ->latest()
+                ->where('created_at', '>=', $firstDayOfMonth)
+                ->where('created_at', '<=', $lastDayOfMonth)
                 ->first();
     }
 
-    public function consumptionSummary($lastReportedDate)
+    /**
+     * Retrives the sum of consumptions
+     */
+    public function consumptionSummary($date)
     {
-        return self::where('created_at', '>', $lastReportedDate)
+        return self::where('created_at', '>', $date)
                 ->where('reported', 0)
                 ->sum('diff_by_amount');
     }

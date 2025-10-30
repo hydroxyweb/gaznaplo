@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import Card from './card.vue';
 import axios from 'axios';
 import { StatResponse } from '../types/stat-response';
+import StatisticSmiley from './statistic-smiley.vue';
+import MonthSelector from './month-selector.vue';
 
 const stats = ref<StatResponse>({
   month: '',
@@ -10,26 +12,55 @@ const stats = ref<StatResponse>({
   consumption: 0,
   lastReportedAmount: 0,
   maxLimit: 0,
-  lastReading: 0
+  lastReading: 0,
+  overConsumption: 0,
+  remaining: 0,
+  clockSetting: 0
 })
 
-const remaining = computed(() => stats.value.maxLimit - stats.value.consumption)
-
-async function fetchMonthStatistics() {
+const errorMessage = ref('');
+async function fetchActualMonthStatistics() {
   const { data } = await axios.get<StatResponse>('stat')
   stats.value = data
 }
 
-fetchMonthStatistics();
+async function fetchMonthStatistics(date : string) {
+  try {
+    const { data } = await axios.get<StatResponse>('stat', {
+      params: {
+        date
+      }
+    });
+    stats.value = data;
+    errorMessage.value = '';
+  } catch (error: any) {
+    errorMessage.value = error.response.data.message || 'Ismeretlen hiba';
+  }
+}
+
+fetchActualMonthStatistics();
+
+defineExpose({
+  fetchActualMonthStatistics
+});
 </script>
 <template>
   <Card :title="`${stats.year} ${stats.month}`" class="text-center">
     <template #content>
-      <p>Kedvezményes mennyiség: {{ stats.maxLimit }}</p>
-      <p>Eddigi fogyasztás: {{ stats.consumption }}</p>
-      <p>Még felhasználható kedv.m.: {{  remaining }}</p>
-      <p>Legutóbbi bediktált óraállás: {{ stats.lastReportedAmount }}</p>
-      <p>Legutóbbi leolvasott óraállás: {{ stats.lastReading }}</p>
+      <MonthSelector @change-month="fetchMonthStatistics" />
+      <p v-if="errorMessage.length > 0" class="text-red-500">
+        {{ errorMessage }}
+      </p>
+      <template v-if="errorMessage.length === 0">
+        <StatisticSmiley :consumption="stats.consumption" :max-limit="stats.maxLimit"/>
+        <p class="pt-3"><b>Kedvezményes mennyiség:</b> {{ stats.maxLimit }} m<sup>3</sup></p>
+        <p><b>Eddigi fogyasztás:</b> {{ stats.consumption }} m<sup>3</sup></p>
+        <p><b>Még felhasználható kedv.m.:</b> {{  stats.remaining }} m<sup>3</sup></p>
+        <p><b>Túlfogyasztott mennyiség.:</b> {{ stats.overConsumption }} m<sup>3</sup></p>
+        <p><b>Legutóbbi bediktált óraállás:</b> {{ stats.lastReportedAmount }} m<sup>3</sup></p>
+        <p><b>Legutóbbi leolvasott óraállás:</b> {{ stats.lastReading }} m<sup>3</sup></p>
+        <p><b>Javasolt időzítő beállítás:</b> {{ stats.clockSetting }}</p>
+      </template>
     </template>
   </Card>
 </template>
