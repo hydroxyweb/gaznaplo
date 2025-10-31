@@ -7,5 +7,6 @@ export interface StatResponse {
     lastReading: number,
     remaining: number,
     overConsumption: number,
-    clockSetting: number
+    clockSetting: number,
+    monthNumber: number
 }

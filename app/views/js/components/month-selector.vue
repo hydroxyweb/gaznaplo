@@ -17,7 +17,7 @@ const generateMonthOptions = () : OptionType[] => {
   let year = today.getFullYear();
   let month = today.getMonth() + 1;
 
-  while (year > 2023 || (year === 2024 && month >= 1)) {
+  while (year > 2024 || (year === 2025 && month >= 1)) {
     const monthStr = month.toString().padStart(2, '0');
     options.push({
       value: `${year}-${monthStr}`,

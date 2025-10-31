@@ -31,7 +31,7 @@ class ConsumptionLog extends Model
         $givenDate = new Carbon($date);
         $firstDayOfMonth = $givenDate->copy()->startOfMonth()->toDateString();
         $lastDayOfMonth = $givenDate->copy()->endOfMonth()->toDateString();
-        return self::where('reported', '1')
+        return self::where('reported', 1)
                 ->where('created_at', '>=', $firstDayOfMonth)
                 ->where('created_at', '<=', $lastDayOfMonth)
                 ->first();
@@ -42,7 +42,26 @@ class ConsumptionLog extends Model
      */
     public function consumptionSummary($date)
     {
+       $closestReported = self::where('reported', 1)
+                            ->where('created_at', '>', $date)
+                            ->orderBy('created_at', 'asc')
+                            ->get();
+        
+        if (!isset($closestReported[0])) {
+            $givenDate = new Carbon($date);
+            $isSameMonth = $givenDate->isSameMonth(Carbon::now());
+
+            if ($isSameMonth) {
+                return self::where('created_at', '>', $date)
+                        ->where('reported', 0)
+                        ->sum('diff_by_amount');
+            }
+
+          return null;  
+        }
+
         return self::where('created_at', '>', $date)
+                ->where('created_at', '<', $closestReported[0]->created_at)
                 ->where('reported', 0)
                 ->sum('diff_by_amount');
     }

@@ -9,6 +9,7 @@ import MonthSelector from './month-selector.vue';
 const stats = ref<StatResponse>({
   month: '',
   year: '',
+  monthNumber: 0,
   consumption: 0,
   lastReportedAmount: 0,
   maxLimit: 0,
@@ -19,6 +20,8 @@ const stats = ref<StatResponse>({
 })
 
 const errorMessage = ref('');
+const isCurrentMonth = ref(true);
+
 async function fetchActualMonthStatistics() {
   const { data } = await axios.get<StatResponse>('stat')
   stats.value = data
@@ -33,6 +36,7 @@ async function fetchMonthStatistics(date : string) {
     });
     stats.value = data;
     errorMessage.value = '';
+    isCurrentMonth.value = `${stats.value.year}-${stats.value.monthNumber}` === date;
   } catch (error: any) {
     errorMessage.value = error.response.data.message || 'Ismeretlen hiba';
   }
@@ -57,9 +61,11 @@ defineExpose({
         <p><b>Eddigi fogyasztás:</b> {{ stats.consumption }} m<sup>3</sup></p>
         <p><b>Még felhasználható kedv.m.:</b> {{  stats.remaining }} m<sup>3</sup></p>
         <p><b>Túlfogyasztott mennyiség.:</b> {{ stats.overConsumption }} m<sup>3</sup></p>
-        <p><b>Legutóbbi bediktált óraállás:</b> {{ stats.lastReportedAmount }} m<sup>3</sup></p>
-        <p><b>Legutóbbi leolvasott óraállás:</b> {{ stats.lastReading }} m<sup>3</sup></p>
-        <p><b>Javasolt időzítő beállítás:</b> {{ stats.clockSetting }}</p>
+        <template v-if="isCurrentMonth">
+          <p><b>Legutóbbi bediktált óraállás:</b> {{ stats.lastReportedAmount }} m<sup>3</sup></p>
+          <p><b>Legutóbbi leolvasott óraállás:</b> {{ stats.lastReading }} m<sup>3</sup></p>
+          <p><b>Javasolt időzítő beállítás:</b> {{ stats.clockSetting }}</p>
+        </template>
       </template>
     </template>
   </Card>
