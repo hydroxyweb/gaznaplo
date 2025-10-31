@@ -67,7 +67,7 @@ defineExpose({
                         :key="record.id"
                         class="hover:bg-gray-50"
                         :class="{
-                            'bg-green-300': record.reported
+                            'bg-green-300': Number(record.reported) === 1
                         }"
                     >
                         <td class="p-2 border-b"> {{ formatDate(record.created_at) }}</td>
