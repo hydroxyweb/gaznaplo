@@ -33,7 +33,7 @@ const handleSuccess = () : void => {
             </div>
             <div class="flex flex-col gap-5">
                 <MonthStatistic ref="monthStatisticRef" />
-                <AllEntries ref="allEntriesRef" />
+                <AllEntries ref="allEntriesRef" class="mb-20"/>
             </div>
 
             <button
