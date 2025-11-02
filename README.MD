@@ -81,6 +81,7 @@ A cél, hogy egyértelmű visszajelzést adjon (pl. színekkel, ikonokkal vagy s
 ## 📦 Deployment
 
 A telepítésről és szerverre való feltöltésről további részleteket találsz a [Leaf dokumentációban](https://leafphp.dev/learn/deployment/).
+A szerveren töröljük a `public` mappát mielőtt újabb verziót teszünk ki.
 
 ---
 
