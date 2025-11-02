@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { OptionType } from '../types/option-type';
+import axios from 'axios';
 
 const selected = ref('');
+const hasReportedRecord = ref(false);
 const emit = defineEmits([
     'change-month'
-])
+]);
+
+async function currentMonthHasReportedRecord() {
+  const { data } = await axios.get<{hasAny : boolean}>('has-reported-record')
+  hasReportedRecord.value = data.hasAny;
+}
+
 const generateMonthOptions = () : OptionType[] => {
   const options: OptionType[] = [
     {
@@ -15,7 +23,7 @@ const generateMonthOptions = () : OptionType[] => {
   ];
   const today = new Date();
   let year = today.getFullYear();
-  let month = today.getMonth() + 1;
+  let month = hasReportedRecord.value ? today.getMonth() + 1 : today.getMonth();
 
   while (year > 2024 || (year === 2025 && month >= 1)) {
     const monthStr = month.toString().padStart(2, '0');
@@ -40,6 +48,8 @@ selected.value = options[0].value;
 const handleChange = () => {
     emit('change-month', selected.value);
 }
+
+currentMonthHasReportedRecord();
 </script>
 
 <template>

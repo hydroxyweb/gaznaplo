@@ -17,7 +17,8 @@ class StatisticController extends Controller
 
     public function index() 
     {
-        $now = Carbon::now();
+        $hasAnyReportedRecord = $this->consumptionLog->currentMonthHasReportedRecord();
+        $now = $hasAnyReportedRecord ? Carbon::now() : Carbon::now()->copy()->subMonth();
         $currentDate = $now->year. '-'. $now->month;
         $lastReportedRecord = $this->consumptionLog->lastReportedRecord(request()->get('date') ?? $currentDate);
         if (empty($lastReportedRecord)) {
@@ -48,6 +49,13 @@ class StatisticController extends Controller
             'remaining' => $remainingAmount > 0 ? $remainingAmount : 0,
             'clockSetting' => ceil($currentMaxLimit / $daysInMonth/1.89*4),
             'monthNumber' => $lastReportedDate->month,
+        ]);
+    }
+    
+    public function curentMonthHasReportedRecord()
+    {
+        return response()->json([
+            'hasAny' => $this->consumptionLog->currentMonthHasReportedRecord()
         ]);
     }
 }
