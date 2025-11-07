@@ -23,13 +23,13 @@ class StatisticController extends Controller
         $lastReportedRecord = $this->consumptionLog->lastReportedRecord(request()->get('date') ?? $currentDate);
         if (empty($lastReportedRecord)) {
             return response()->json([
-                'message' => 'Nem sikerült betölteni ehhez a hónaphoz tartozó statisztikákat'
+                'message' => __('cant-load-statistic')
             ], 404);
         }
 
         $lastReportedAmount = $lastReportedRecord->amount;
         $lastReportedDate = new Carbon($lastReportedRecord->created_at);
-        $lastReportedDate = $lastReportedDate->locale('hu_HU');
+        $lastReportedDate = $lastReportedDate->locale($_SERVER['HTTP_ACCEPT_LANGUAGE'] === 'hu' ? 'hu_HU': 'en_BG');
         $daysInMonth = $lastReportedDate->daysInMonth;
 
         $currentMaxLimit = CharacteristicCurve::where('month', $lastReportedDate->month)->value('max_limit');

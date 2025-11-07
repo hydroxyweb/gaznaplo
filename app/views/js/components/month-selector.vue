@@ -1,16 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { OptionType } from '../types/option-type';
 import axios from 'axios';
+import { useI18n } from 'vue-i18n'
 
+const { t, locale } = useI18n();
 const selected = ref('');
+const options = ref<OptionType[]>([] as OptionType[]);
 const hasReportedRecord = ref(false);
 const emit = defineEmits([
     'change-month'
 ]);
 
 async function currentMonthHasReportedRecord() {
-  const { data } = await axios.get<{hasAny : boolean}>('has-reported-record')
+  const { data } = await axios.get<{hasAny : boolean}>('has-reported-record', {
+    headers: {
+        'Accept-Language': locale.value ?? 'hu'
+      }
+  })
   hasReportedRecord.value = data.hasAny;
 }
 
@@ -18,7 +25,7 @@ const generateMonthOptions = () : OptionType[] => {
   const options: OptionType[] = [
     {
         value: '0',
-        label: 'Másik hónap statisztikája'
+        label: t('month-selector.choose-other')
     }
   ];
   const today = new Date();
@@ -42,8 +49,14 @@ const generateMonthOptions = () : OptionType[] => {
   return options;
 }
 
-const options = generateMonthOptions();
-selected.value = options[0].value;
+onMounted(() => {
+  options.value = generateMonthOptions();
+  selected.value = options.value[0].value;
+});
+
+watch(locale, () => {
+  options.value = generateMonthOptions()
+});
 
 const handleChange = () => {
     emit('change-month', selected.value);
@@ -57,8 +70,11 @@ currentMonthHasReportedRecord();
     <select
       id="monthYear"
       v-model="selected"
-      class="border rounded-lg p-2 w-full text-gray-900"
       @change="handleChange"
+      class="border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 w-full
+             bg-white dark:bg-slate-800 text-gray-900 dark:text-gray-100
+             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+             transition-colors duration-200"
     >
       <option
         v-for="option in options"

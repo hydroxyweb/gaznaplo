@@ -25,6 +25,7 @@ chdir($appPath);
 |
 */
 require "$appPath/vendor/autoload.php";
+require __DIR__ . '/../app/helpers/lang.php';
 
 /*
 |--------------------------------------------------------------------------

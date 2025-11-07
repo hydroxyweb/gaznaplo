@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import axios from 'axios';
+import { useI18n } from 'vue-i18n'
 
+const { t, locale } = useI18n();
 const amount = ref(0);
 const date = ref(new Date().toISOString().substring(0, 10));
 const reported = ref(false);
@@ -9,10 +11,15 @@ const emit = defineEmits([
   'success'
 ]);
 
-function addLogEntry() {
+const addLogEntry = () : void => {
     axios.post('log', {
       amount: amount.value,
       reported: reported.value
+    }, 
+    {
+      headers: {
+        'Accept-Language': locale.value ?? 'hu'
+      }
     })
     .then((response) => {
       alert('Sikeresen elmentve');
@@ -20,16 +27,21 @@ function addLogEntry() {
     });
 }
 
-function selectAll(event: FocusEvent) {
+const selectAll = (event: FocusEvent) : void => {
   const input = event.target as HTMLInputElement;
   input.select();
 }
+
+const onEnter = (event: KeyboardEvent) : void => {
+  const target = event.target as HTMLInputElement;
+  target.blur();
+}
 </script>
 <template>
-    <h2 class="text-xl font-bold text-center">Új óraállás rögzítése</h2>
+    <h2 class="text-xl font-bold text-center">{{  t('add-log-entry.title') }}</h2>
     <form @submit.prevent="addLogEntry" class="text-center">
       <div class="my-3">
-        <label for="amount" class="font-bold">Óraállás:</label>
+        <label for="amount" class="font-bold">{{  t('add-log-entry.amount') }}</label>
         <input
           type="number"
           v-model="amount"
@@ -40,10 +52,11 @@ function selectAll(event: FocusEvent) {
                 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           @focus="selectAll"
+          @keydown.enter.prevent="onEnter"
         /> 
       </div>
       <div>
-        <label for="date" class="font-bold">Dátum:</label>
+        <label for="date" class="font-bold">{{  t('add-log-entry.date') }}:</label>
         <input type="date" 
           v-model="date" 
           id="date" 
@@ -56,11 +69,11 @@ function selectAll(event: FocusEvent) {
       <div class="mb-3">
         <label for="reported" class="font-bold">
           <input type="checkbox" v-model="reported" id="reported" />
-          Diktálva
+          {{  t('add-log-entry.is-reported') }}
         </label>
       </div>
       <div class="text-center">
-        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Hozzáadás</button>
+        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{{  t('add-log-entry.send') }}</button>
       </div>
     </form>
 </template>
