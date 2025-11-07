@@ -22,6 +22,7 @@ class ConsumptionLogController extends Controller
         $log->diff_by_date = $diffInDays;
 
         $log->average_consumption = $diffInDays > 0 ? $diffByAmount / $diffInDays : 0;
+        $log->reported = (int) request()->get('reported');
         
         $log->save();
     }

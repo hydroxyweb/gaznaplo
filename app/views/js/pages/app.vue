@@ -15,6 +15,9 @@ const monthStatisticRef = ref<typeof MonthStatistic>();
 const allEntriesRef = ref<typeof AllEntries>();
 
 const handleSuccess = () : void => {
+    localStorage.removeItem('allRecords');
+    localStorage.removeItem('currentMonth');
+    
     if (monthStatisticRef.value) {
         monthStatisticRef.value.fetchActualMonthStatistics();
     }

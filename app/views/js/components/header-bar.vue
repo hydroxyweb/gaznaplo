@@ -2,6 +2,7 @@
 import LanguageSelector from './header-bar/language-selector.vue';
 import ThemeToggle from './header-bar/theme-toggle.vue';
 import ConnectionStatus from './header-bar/connection-status.vue';
+import DeleteCache from './header-bar/delete-cache.vue';
 </script>
 
 <template>
@@ -13,6 +14,7 @@ import ConnectionStatus from './header-bar/connection-status.vue';
       <LanguageSelector />
       <ThemeToggle />
       <ConnectionStatus />
+      <DeleteCache />
     </div>
   </header>
 </template>

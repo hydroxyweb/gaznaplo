@@ -70,7 +70,7 @@ class ConsumptionLog extends Model
 
     public function currentMonthHasReportedRecord()
     {
-        $count = self::where('created_at', '>', Carbon::now()->toDateString())
+        $count = self::where('created_at', '>', Carbon::now()->startOfMonth()->toDateString())
                         ->where('reported', 1)
                         ->count();
         return $count > 0;

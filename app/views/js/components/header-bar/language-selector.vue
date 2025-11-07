@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-const { locale } = useI18n()
-const currentLang = ref(locale.value)
+const { locale } = useI18n();
+const currentLang = ref(locale.value);
 
 function changeLanguage() {
-  locale.value = currentLang.value
-  localStorage.setItem('lang', currentLang.value)
+  locale.value = currentLang.value;
+  localStorage.setItem('lang', currentLang.value);
 }
 </script>
 

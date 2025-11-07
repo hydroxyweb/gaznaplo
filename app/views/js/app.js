@@ -54,6 +54,9 @@ const i18n = createI18n({
             'cancel': 'Mégse',
             'app-name': 'GázNapló',
             'loading': 'Betöltés...',
+        },
+        'delete-cache': {
+            'action': 'Cache törlése',
         }
     },
 
@@ -97,6 +100,9 @@ const i18n = createI18n({
             'cancel': 'Cancel',
             'app-name': 'GasNote',
             'loading': 'Loading...',
+        },
+        'delete-cache': {
+            'action': 'Delete cache',
         }
     }
   }

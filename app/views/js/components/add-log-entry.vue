@@ -22,7 +22,7 @@ const addLogEntry = () : void => {
       }
     })
     .then((response) => {
-      alert('Sikeresen elmentve');
+      alert(t('add-log-entry.success'));
       emit('success');
     });
 }
