@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import Card from './card.vue';
-import axios from 'axios';
+import api from '../utils/axios';
 import { StatResponse } from '../types/stat-response';
 import StatisticSmiley from './statistic-smiley.vue';
 import MonthSelector from './month-selector.vue';
@@ -33,11 +33,7 @@ async function fetchActualMonthStatistics() {
       stats.value = JSON.parse(localStorage.getItem('currentMonth') ?? '');
       isLoading.value = false;
     } else {
-      const { data } = await axios.get<StatResponse>('stat', {
-        headers: {
-            'Accept-Language': locale.value ?? 'hu'
-        }
-      })
+      const { data } = await api.get<StatResponse>('stat');
       stats.value = data;
       isLoading.value = false;
       localStorage.setItem('currentMonth', JSON.stringify(data));
@@ -49,12 +45,9 @@ async function fetchActualMonthStatistics() {
 
 async function fetchMonthStatistics(date : string) {
   try {
-    const { data } = await axios.get<StatResponse>('stat', {
+    const { data } = await api.get<StatResponse>('stat', {
       params: {
         date
-      },
-      headers: {
-        'Accept-Language': locale.value ?? 'hu'
       }
     });
     stats.value = data;

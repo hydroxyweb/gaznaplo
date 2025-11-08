@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import axios from 'axios';
-import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n';
+import { useNetworkStatus } from '../composables/use-network-status';
+import { sendLogEntry } from '../utils/log-service';
 
 const { t, locale } = useI18n();
+const { isOnline } = useNetworkStatus();
 const amount = ref(0);
 const date = ref(new Date().toISOString().substring(0, 10));
 const reported = ref(false);
@@ -12,19 +14,38 @@ const emit = defineEmits([
 ]);
 
 const addLogEntry = () : void => {
-    axios.post('log', {
+  if (isOnline.value) 
+  {
+    sendLogEntry({
       amount: amount.value,
+      date: date.value,
       reported: reported.value
-    }, 
-    {
-      headers: {
-        'Accept-Language': locale.value ?? 'hu'
-      }
     })
     .then((response) => {
       alert(t('add-log-entry.success'));
       emit('success');
     });
+  } else {
+    const readingStorage = localStorage.getItem('readingStorage');
+    if (readingStorage) {
+      const storedReadings = JSON.parse(readingStorage);
+      storedReadings.push({
+        amount: amount.value,
+        reported: reported.value,
+        date: date.value
+      });
+      localStorage.setItem('readingStorage', JSON.stringify(storedReadings));
+    } else {
+      localStorage.setItem('readingStorage', JSON.stringify([{
+        amount: amount.value,
+        reported: reported.value,
+        date: date.value
+      }])
+      );
+    }
+    alert(t('add-log-entry.success-offline'));
+    emit('success');
+  }
 }
 
 const selectAll = (event: FocusEvent) : void => {
@@ -37,6 +58,7 @@ const onEnter = (event: KeyboardEvent) : void => {
   target.blur();
 }
 </script>
+
 <template>
     <h2 class="text-xl font-bold text-center">{{  t('add-log-entry.title') }}</h2>
     <form @submit.prevent="addLogEntry" class="text-center">

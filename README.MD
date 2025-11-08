@@ -21,6 +21,28 @@ A cél, hogy egyértelmű visszajelzést adjon (pl. színekkel, ikonokkal vagy s
 
 ---
 
+## 📜 Feature List
+
+- [x] Mérőóraállás beküldés
+- [x] Havi statisztika
+  - [x] Hónapra vonatkozó kedvezményes mennyiség a fűtési jelleggörbe alapján
+  - [x] Havi fogyasztás
+  - [x] Még felhasználhat kedvezményes mennyiség
+  - [x] Túlfogyasztás
+  - [x] Legutóbbi bediktált óraállás
+  - [x] Legutóbbi leolvasott óraállás
+  - [x] Javasolt időzítő beállítás számítás
+- [x] Összes leolvasás megtekintése
+  - [x] Napi átlagfogyasztás kijelzése 
+- [x] Nyelvválasztó (Magyar és Angol)
+- [x] Sötét/világos mód választó
+- [x] **PWA (Progressive Web Application)**
+- [x] Online/offline indikátor
+- [x] Tárolt adatok (cache) törlése
+- [x] **Offline állapot** esetén is elérhető a legutóbbi statisztika, valamint küldhető be diktálás, ami automatikusan szinkronizálódik, ha újra online van az oldal.
+
+---
+
 ## 🚀 Telepítés és futtatás
 
 1. **Projekt klónozása**

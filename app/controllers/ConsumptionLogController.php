@@ -8,7 +8,8 @@ class ConsumptionLogController extends Controller
 {
     public function log() 
     {
-        $newAmount = request()->get('amount') ?? 0;
+        $params = request()->get('params');
+        $newAmount = $params['amount'] ?? 0;
         $log = new ConsumptionLog();
         $lastEntry = ConsumptionLog::latest()->first();
 
@@ -17,12 +18,14 @@ class ConsumptionLogController extends Controller
         $log->diff_by_amount = $diffByAmount;
 
         $date = Carbon::parse($lastEntry->created_at);
-        $now = Carbon::now();
+        $now = Carbon::parse($params['date']) ?? Carbon::now();
+        $log->created_at = $now->toDateString();
+        $log->updated_at = $now->toDateString();
         $diffInDays = floor($date->diffInDays($now));
         $log->diff_by_date = $diffInDays;
 
         $log->average_consumption = $diffInDays > 0 ? $diffByAmount / $diffInDays : 0;
-        $log->reported = (int) request()->get('reported');
+        $log->reported = (int) $params['reported'];
         
         $log->save();
     }

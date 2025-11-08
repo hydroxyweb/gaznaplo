@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import axios from 'axios';
+import api from '../utils/axios';
 import Card from './card.vue';
 import { useI18n } from 'vue-i18n'
 import { useNetworkStatus } from '../composables/use-network-status';
@@ -17,11 +17,7 @@ async function fetchRecords() {
         if (localStorage.getItem('allRecords') || !isOnline) {
             records.value = JSON.parse(localStorage.getItem('allRecords') ?? '');
         } else {
-            const response = await axios.get('/all-records', {
-            headers: {
-                    'Accept-Language': locale.value ?? 'hu'
-                }
-            });
+            const response = await api.get('/all-records');
             records.value = response.data;
             localStorage.setItem('allRecords', JSON.stringify(response.data));
         }

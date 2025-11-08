@@ -3,6 +3,9 @@ import LanguageSelector from './header-bar/language-selector.vue';
 import ThemeToggle from './header-bar/theme-toggle.vue';
 import ConnectionStatus from './header-bar/connection-status.vue';
 import DeleteCache from './header-bar/delete-cache.vue';
+import { useNetworkStatus } from '../composables/use-network-status';
+
+const { isOnline } = useNetworkStatus();
 </script>
 
 <template>
@@ -14,7 +17,7 @@ import DeleteCache from './header-bar/delete-cache.vue';
       <LanguageSelector />
       <ThemeToggle />
       <ConnectionStatus />
-      <DeleteCache />
+      <DeleteCache v-if="isOnline"/>
     </div>
   </header>
 </template>

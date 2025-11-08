@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { OptionType } from '../types/option-type';
-import axios from 'axios';
+import api from '../utils/axios';
 import { useI18n } from 'vue-i18n'
 
 const { t, locale } = useI18n();
@@ -13,11 +13,7 @@ const emit = defineEmits([
 ]);
 
 async function currentMonthHasReportedRecord() {
-  const { data } = await axios.get<{hasAny : boolean}>('has-reported-record', {
-    headers: {
-        'Accept-Language': locale.value ?? 'hu'
-      }
-  })
+  const { data } = await api.get<{hasAny : boolean}>('has-reported-record');
   hasReportedRecord.value = data.hasAny;
 }
 

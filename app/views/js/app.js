@@ -22,6 +22,8 @@ const i18n = createI18n({
             'is-reported': 'Diktálva',
             'send': 'Hozzáadás',
             'success': 'Az új óraállás sikeresen rögzítve',
+            'success-offline': 'Az új óraállás eltárolásra került későbbi szinkronizáció céljából',
+            'all-synced': 'Minden eltárolt leolvasás szinkronizálásra került',
         },
         'theme-toggle': {
             'dark-mode': 'Váltás sötét módra',
@@ -68,6 +70,8 @@ const i18n = createI18n({
             'is-reported': 'Submitted to Provider',
             'send': 'Save',
             'success': 'Your gas reading has been saved successfully',
+            'success-offline': 'The new reading has been stored for later synchronization', 
+            'all-synced': 'All stored readings have been synchronized',
         },
         'theme-toggle': {
             'dark-mode': 'Switch to Dark Mode',
