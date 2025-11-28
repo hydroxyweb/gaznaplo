@@ -33,6 +33,10 @@ class ConsumptionLogController extends Controller
     public function allRecords()
     {
         $records = ConsumptionLog::orderBy('created_at', 'desc')->get();
+        foreach($records as $index => $record) {
+            $records[$index]['amount'] = round($record['amount']);
+            $records[$index]['diff_by_amount'] = round($record['diff_by_amount']);
+        }
         return response()->json($records);
     }
 }
