@@ -59,6 +59,12 @@ const i18n = createI18n({
         },
         'delete-cache': {
             'action': 'Cache törlése',
+        },
+        'characteristic-curve': {
+            'title': 'Jelleggörbe',
+            'month': 'Hónap',
+            'amount': 'Kedv.menny.',
+            'clock-settings': 'Id.beá.',
         }
     },
 
@@ -94,7 +100,7 @@ const i18n = createI18n({
             'date': 'Date',
             'amount': 'Value',
             'consumption': 'Usage',
-            'average-consumption': 'Daily Avg.Uđ.',
+            'average-consumption': 'Daily Avg.U.',
             'show-all': 'Show All Records',
             'close': 'Collapse',
         },
@@ -107,6 +113,12 @@ const i18n = createI18n({
         },
         'delete-cache': {
             'action': 'Delete cache',
+        },
+        'characteristic-curve': {
+            'title': 'Characteristic curve',
+            'month': 'Month',
+            'amount': 'Disc.am.',
+            'clock-settings': 'Cl.St.',
         }
     }
   }

@@ -54,6 +54,10 @@ watch(locale, () => {
   options.value = generateMonthOptions()
 });
 
+watch(hasReportedRecord, () => {
+  options.value = generateMonthOptions()
+});
+
 const handleChange = () => {
     emit('change-month', selected.value);
 }

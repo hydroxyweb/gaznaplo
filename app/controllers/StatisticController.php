@@ -47,7 +47,7 @@ class StatisticController extends Controller
             'consumption' => $consumptionSummary,
             'overConsumption' => $overConsumption > 0 ? $overConsumption : 0,
             'remaining' => $remainingAmount > 0 ? $remainingAmount : 0,
-            'clockSetting' => ceil($currentMaxLimit / $daysInMonth/1.89*4),
+            'clockSetting' => floor($currentMaxLimit / $daysInMonth / 2 * 4),
             'monthNumber' => $lastReportedDate->month,
         ]);
     }

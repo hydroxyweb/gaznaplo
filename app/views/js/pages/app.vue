@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AddLogEntry from '../components/add-log-entry.vue';
 import MonthStatistic from '../components/month-statistic.vue';
+import CharacteristicCurve from '../components/characteristic-curve.vue';
 import Modal from '../components/modal.vue';
 import { onMounted, ref, shallowRef } from 'vue';
 import AllEntries from '../components/all-entries.vue';
@@ -14,6 +15,7 @@ const { t, locale } = useI18n();
 const logEntryModalRef = shallowRef<typeof Modal>();
 const monthStatisticRef = ref<typeof MonthStatistic>();
 const allEntriesRef = ref<typeof AllEntries>();
+const characteristicCurveRef = ref<typeof CharacteristicCurve>();
 
 const handleSuccess = () : void => {
     if (isOnline.value) {
@@ -25,6 +27,10 @@ const handleSuccess = () : void => {
         }
         if (allEntriesRef.value) {
             allEntriesRef.value.fetchRecords();
+        }
+
+        if (characteristicCurveRef.value) {
+            characteristicCurveRef.value.fetchRecords();
         }
     }
 
@@ -67,7 +73,8 @@ onMounted(() => {
 
             <div class="flex flex-col gap-5">
             <MonthStatistic ref="monthStatisticRef" />
-            <AllEntries ref="allEntriesRef" class="mb-20" />
+            <AllEntries ref="allEntriesRef" />
+            <CharacteristicCurve class="mb-20" ref="characteristicCurveRef"/>
             </div>
 
             <button

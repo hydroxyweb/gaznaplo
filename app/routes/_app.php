@@ -6,3 +6,4 @@ app()->post('/log', 'ConsumptionLogController@log');
 app()->get('/stat', 'StatisticController@index');
 app()->get('/all-records', 'ConsumptionLogController@allRecords');
 app()->get('/has-reported-record', 'StatisticController@curentMonthHasReportedRecord');
+app()->get('/characteristic-curve', 'CharacteristicCurveController@index');

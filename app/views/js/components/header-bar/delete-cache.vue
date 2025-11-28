@@ -6,8 +6,7 @@ const { t } = useI18n();
 const deleteCache = () => {
     localStorage.removeItem('allRecords');
     localStorage.removeItem('currentMonth');
-    localStorage.removeItem('lang');
-    localStorage.removeItem('theme');
+    localStorage.removeItem('characteristicCurveRecords');
     window.location.reload();
 };
 </script>
