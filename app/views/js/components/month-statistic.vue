@@ -11,6 +11,7 @@ import { useNetworkStatus } from '../composables/use-network-status';
 const { t, locale } = useI18n();
 const { isOnline } = useNetworkStatus();
 const isLoading = ref(true);
+const monthSelectorRef = ref<typeof MonthSelector>();
 const stats = ref<StatResponse>({
   month: '',
   year: '',
@@ -62,8 +63,15 @@ async function fetchMonthStatistics(date : string) {
 
 fetchActualMonthStatistics();
 
+const refreshMonthSelector = () => {
+  if (monthSelectorRef.value) {
+    monthSelectorRef.value.currentMonthHasReportedRecord();
+  }
+}
+
 defineExpose({
-  fetchActualMonthStatistics
+  fetchActualMonthStatistics,
+  refreshMonthSelector
 });
 
 watch(locale, () => {
@@ -74,7 +82,7 @@ watch(locale, () => {
   <Card :title="`${stats.year} ${stats.month}`" class="text-center">
     <template #content>
       <template v-if="!isLoading">
-        <MonthSelector @change-month="fetchMonthStatistics" v-if="isOnline"/>
+        <MonthSelector @change-month="fetchMonthStatistics" v-if="isOnline" ref="monthSelectorRef"/>
         <p v-if="errorMessage.length > 0" class="text-red-500">
           {{ errorMessage }}
         </p>

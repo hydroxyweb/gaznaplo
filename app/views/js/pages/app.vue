@@ -24,6 +24,7 @@ const handleSuccess = () : void => {
         
         if (monthStatisticRef.value) {
             monthStatisticRef.value.fetchActualMonthStatistics();
+            monthStatisticRef.value.refreshMonthSelector();
         }
         if (allEntriesRef.value) {
             allEntriesRef.value.fetchRecords();

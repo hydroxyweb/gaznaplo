@@ -63,6 +63,8 @@ const handleChange = () => {
 }
 
 currentMonthHasReportedRecord();
+
+defineExpose({ currentMonthHasReportedRecord })
 </script>
 
 <template>
