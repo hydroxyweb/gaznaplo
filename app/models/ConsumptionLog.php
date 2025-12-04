@@ -46,25 +46,24 @@ class ConsumptionLog extends Model
                             ->where('created_at', '>', $date)
                             ->orderBy('created_at', 'asc')
                             ->get();
-        
+
         if (!isset($closestReported[0])) {
             $givenDate = new Carbon($date);
             $now = Carbon::now();
             $isSameMonth = $givenDate->isSameMonth($now);
             $previousMonth = $now->subMonth();
-
+           
             if ($isSameMonth || $givenDate->isSameMonth($previousMonth)) {
                 return self::where('created_at', '>', $date)
                         ->where('reported', 0)
                         ->sum('diff_by_amount');
             }
 
-          return null;
+            return null;
         }
 
         return self::where('created_at', '>', $date)
-                ->where('created_at', '<', $closestReported[0]->created_at)
-                ->where('reported', 0)
+                ->where('created_at', '<=', $closestReported[0]->created_at)
                 ->sum('diff_by_amount');
     }
 

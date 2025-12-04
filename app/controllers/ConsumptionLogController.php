@@ -18,7 +18,7 @@ class ConsumptionLogController extends Controller
         $log->diff_by_amount = $diffByAmount;
 
         $date = Carbon::parse($lastEntry->created_at);
-        $now = Carbon::parse($params['date']) ?? Carbon::now();
+        $now = Carbon::parse($params['date']) ?? Carbon::now()->format('Y-m-d');
         $log->created_at = $now->toDateString();
         $log->updated_at = $now->toDateString();
         $diffInDays = ceil($date->diffInDays($now));
