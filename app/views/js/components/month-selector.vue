@@ -26,9 +26,9 @@ const generateMonthOptions = () : OptionType[] => {
   ];
   const today = new Date();
   let year = today.getFullYear();
-  let month = hasReportedRecord.value ? today.getMonth() + 1 : today.getMonth();
+  let month = today.getMonth() + 1;
 
-  while (year > 2024 || (year === 2025 && month >= 1)) {
+  while (year > 2024) {
     const monthStr = month.toString().padStart(2, '0');
     options.push({
       value: `${year}-${monthStr}`,
